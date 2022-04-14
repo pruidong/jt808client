@@ -405,7 +405,7 @@ public class TCPClient {
             }
 
 
-            //sendMessage(buildMessage(hexPhone, " 发送位置消息 >>> ", HexStringUtils.toHexString(locationData)));
+            sendMessage(buildMessage(hexPhone, " 发送位置消息 >>> ", HexStringUtils.toHexString(locationData)));
 
         }
 

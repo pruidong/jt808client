@@ -17,12 +17,13 @@
 
 <div id="parent">
     <div>
-        服务IP<input type="text" id="serverIp">
-        服务PORT<input type="text" id="serverPort">
-        模拟终端数量 <input type="text" id="clientCount" >
-        gps间隔 <input type="text" id="gpsInterval" style="width: 80px" placeholder="默认10秒">
+        服务IP<input type="text" id="serverIp" value="127.0.0.1">
+        服务PORT<input type="text" id="serverPort" value="8608">
+        模拟终端数量 <input type="text" id="clientCount" value="5">
+        gps间隔 <input type="text" id="gpsInterval" style="width: 80px" value="10" placeholder="默认10秒">
         <button id="begin">开始</button>
         <button id="end">结束</button>
+        <span id="time">已运行时间</span>
     </div>
     <div id="count_div" style="margin-top: 10px;margin-bottom: 10px">
         目标启动终端：<b id="targetCount">0</b>
@@ -55,9 +56,13 @@
     var registerFailedCountEle = document.getElementById("registerFailedCount");
     var gpsCountEle = document.getElementById("gpsCount");
     var hasSaveDataEle = document.getElementById("hasSaveData");
-
+    var time=0;
+    var timeIntervalId=-1;
     var ws = null;
     end.onclick = function () {
+        time=0;
+        document.getElementById("time").innerText="点开始按钮开始计时!";
+        clearInterval(timeIntervalId);
         if (ws != null) {
             ws.send(1);
         }
@@ -101,6 +106,16 @@
             runMessageEle.value = "onerror";
             ws = null;
         }
+        timeIntervalId=setInterval(function (){
+            time++;
+            var showTime=time/60;
+            showTime=showTime.toFixed(2);
+            if(showTime<1){
+                document.getElementById("time").innerText="已运行"+time+"秒!";
+            }else{
+                document.getElementById("time").innerText="已运行"+showTime+"分!";
+            }
+        },1000)
 
     }
 

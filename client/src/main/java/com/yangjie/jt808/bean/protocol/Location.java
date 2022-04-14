@@ -5,6 +5,9 @@ import com.yangjie.bitoperator.annotations.BitsProperty;
 import com.yangjie.bitoperator.enums.DataFormat;
 import com.yangjie.bitoperator.enums.LengthUnit;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Location {
 
     @BitsProperty(length = 4, desc = "报警标志", dataFormat = DataFormat.BEAN)
@@ -23,6 +26,16 @@ public class Location {
     private int orientation = 30;
     @BitsProperty(length = 6, desc = "时间")
     private long time = 0x200703134410L;
+
+    @BitsProperty(length = 36, desc = "附加信息",dataFormat = DataFormat.LIST)
+    private List<ExtraItem> extraItemList=new ArrayList<>(1);
+    {
+        ExtraItem extraItem=new ExtraItem();
+        extraItem.id=1;
+        extraItem.length=4;
+        extraItem.content=6500;
+        extraItemList.add(extraItem);
+    }
 
     private static class AlarmMark {
         @BitsProperty(length = 1, unit = LengthUnit.BIT, desc = "紧急报瞥触动报警开关后触发")
@@ -93,5 +106,16 @@ public class Location {
         private byte voltage = 1;
         @BitsProperty(length = 1, unit = LengthUnit.BIT, desc = "0:车门解锁； 1：车门加锁 ")
         private byte doorLock = 1;
+    }
+
+
+
+    private static class ExtraItem{
+        @BitsProperty(length = 1, desc = "id")
+        private int id=1;
+        @BitsProperty(length = 1, desc = "长度")
+        private int length=2;
+        @BitsProperty(length = 4, desc = "内容")
+        private int content;
     }
 }

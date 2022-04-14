@@ -19,10 +19,7 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
@@ -97,6 +94,8 @@ public class WebSocketController implements TCPClient.OnNotifyListener {
                 }
             };
             ThreadUtils.executeBySingleAtFixRate(notifyGpsCountTask, 1, TimeUnit.SECONDS);
+            Random random=new Random();
+            beginPhone+=random.nextInt(1000);
             while (clientCount > 0) {
                 checkPhone();
                 TCPClient tcpClient = new TCPClient(beginPhone, cityCode + String.valueOf(beginPlateNumber));
@@ -215,7 +214,8 @@ public class WebSocketController implements TCPClient.OnNotifyListener {
         try {
             releaseAllClients();
             if (WebSocketController.hasSaveData) {
-                saveDataToExcel();
+                // todo:2022.4.13 取消保存.
+                // saveDataToExcel();
             }
         } catch (Exception e) {
             e.printStackTrace();
